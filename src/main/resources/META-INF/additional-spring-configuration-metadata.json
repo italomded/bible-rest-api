@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "bible.jwt.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'bible.jwt.secret'"
+  },
+  {
+    "name": "bible.jwt.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'bible.jwt.expiration'"
+  }
+]}
