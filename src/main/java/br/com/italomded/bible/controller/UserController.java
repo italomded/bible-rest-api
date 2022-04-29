@@ -23,9 +23,9 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@PostMapping("login")
+	@PostMapping
 	public ResponseEntity<?> login(@RequestBody @Valid LoginForm form) {
-		String token = userService.login(form.convert());
+		String token = userService.login(form);
 		if (token != null) {
 			return ResponseEntity.ok().body(new TokenDTO("Bearer", token));
 		} else {
@@ -35,10 +35,10 @@ public class UserController {
 	
 	@PostMapping("create")
 	@Transactional
-	public ResponseEntity<?> createUser(@RequestBody @Valid SignInForm form) {
-		String username = userService.createUser(form.converter());
+	public ResponseEntity<String> createUser(@RequestBody @Valid SignInForm form) {
+		String username = userService.createUser(form);
 		if (username != null) {
-			return ResponseEntity.status(HttpStatus.CREATED).build();
+			return ResponseEntity.status(HttpStatus.CREATED).body(username);
 		} else {
 			return ResponseEntity.badRequest().build();
 		}

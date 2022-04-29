@@ -1,6 +1,5 @@
 package br.com.italomded.bible.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import br.com.italomded.bible.config.security.TokenService;
+import br.com.italomded.bible.form.LoginForm;
+import br.com.italomded.bible.form.SignInForm;
 import br.com.italomded.bible.model.Profile;
 import br.com.italomded.bible.model.User;
 import br.com.italomded.bible.repository.ProfileRepository;
@@ -34,7 +35,8 @@ public class UserService {
 	private ProfileRepository profileRepository; 
 	
 	@PostMapping
-	public String login(UsernamePasswordAuthenticationToken loginData) {
+	public String login(LoginForm form) {
+		UsernamePasswordAuthenticationToken loginData = form.convert();
 		try {
 			Authentication authentication = authManager.authenticate(loginData);
 			return tokenService.gerarToken(authentication);
@@ -43,20 +45,19 @@ public class UserService {
 		}
 	}
 	
-	public String createUser(User user) {
+	public String createUser(SignInForm form) {
+		User user = form.convert();
+		String authority = form.getAuthority();
+		
 		Optional<User> optUser = userRepository.findById(user.getUsername());
 		if (optUser.isPresent()) {
 			return null;
 		} else {
-			List<Profile> profileList = profileRepository.findAll();
-			Profile profile;
-			if (profileList.isEmpty()) {
-				profile = new Profile();
-				profile.setAuthority("ADM");
-				profileRepository.save(profile);
-			} else {
-				profile = profileList.get(0);
+			Optional<Profile> optProfile = profileRepository.findByAuthority(authority);
+			if (optProfile.isEmpty()) {
+				return null;
 			}
+			Profile profile = optProfile.get();
 			profile.getUsersAuthority().add(user);
 			user.getProfiles().add(profile);
 			

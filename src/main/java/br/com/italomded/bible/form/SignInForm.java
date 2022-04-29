@@ -19,7 +19,10 @@ public class SignInForm {
 	@NotBlank @NotNull
 	private String password;
 	
-	public User converter() {
+	@NotBlank @NotNull
+	private String authority;
+	
+	public User convert() {
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(password);
