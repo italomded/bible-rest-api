@@ -1,7 +1,7 @@
 package br.com.italomded.bible.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +24,7 @@ public class Book {
 	private String abbreviation;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
-	private List<Chapter> chapters = new ArrayList<>();
+	private Set<Chapter> chapters = new HashSet<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Bible bible;

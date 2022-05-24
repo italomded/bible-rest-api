@@ -26,7 +26,6 @@ import br.com.italomded.bible.dto.ChapterDTO;
 import br.com.italomded.bible.dto.ResponseDTO;
 import br.com.italomded.bible.dto.StatementDTO;
 import br.com.italomded.bible.dto.VerseDTO;
-import br.com.italomded.bible.model.Book;
 import br.com.italomded.bible.model.Chapter;
 import br.com.italomded.bible.model.Verse;
 import br.com.italomded.bible.service.BibleService;
@@ -96,9 +95,9 @@ public class BibleController {
 			@PathVariable String book,
 			@PageableDefault(page = 0, size = 5) Pageable page
 			) {
-		Book bookE = bookService.getBook(book.toUpperCase(), page);
-		if (bookE != null) {
-			ResponseDTO<BookDTO> responseDTO = new ResponseDTO<>(new BookDTO(bookE));
+		BookDTO bookDTO = bookService.getBook(book.toUpperCase(), page);
+		if (bookDTO != null) {
+			ResponseDTO<BookDTO> responseDTO = new ResponseDTO<>(bookDTO);
 			return ResponseEntity.ok(responseDTO);
 		} else {
 			return ResponseEntity.notFound().build();

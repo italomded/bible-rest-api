@@ -1,7 +1,6 @@
 package br.com.italomded.bible.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 import br.com.italomded.bible.model.Book;
 import lombok.Getter;
@@ -11,12 +10,12 @@ public class BookDTO {
 
 	private String abbreviation;
 	private String brief;
-	private List<ChapterDTO> chapters;
+	private Page<ChapterDTO> chapters;
 	
-	public BookDTO(Book book) {
+	public BookDTO(Book book, Page<ChapterDTO> chapterPage) {
 		this.abbreviation = book.getAbbreviation();
 		this.brief = book.getBrief();
-		this.chapters = book.getChapters().stream().map(ch -> new ChapterDTO(ch)).collect(Collectors.toList());
+		this.chapters = chapterPage;
 	}
 	
 }
